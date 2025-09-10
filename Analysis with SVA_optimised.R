@@ -647,24 +647,6 @@ run_go_analysis <- function(res,
 
 #######-----------USAGE-------
 
-# 1. Overall analysis (all groups, all times)
-#run1 <- run_deseq2_pipeline(combined_counts, metadata_ordered, 
-#out_prefix = "AllGroups_AllTimes")
-
-# 2. Pairwise group comparison across all times (Control vs C)
-#run2 <- run_deseq2_pipeline(combined_counts, metadata_ordered,
-#groups_keep = c("Control", "CMVS"),
-#contrast = c("Group", "Control", "CMVS"),
-#out_prefix = "Control_vs_C_AllTimes")
-
-# 3. Time-specific analysis (ZT6 only, Control vs E)
-#run3 <- run_deseq2_pipeline(combined_counts, metadata_ordered,
-#groups_keep = c("Control", "CSDS"),
-#times_keep = c("zt_6"),
-#contrast = c("Group", "Control", "CSDS"),
-#out_prefix = "Control_vs_E_ZT6")
-
-
 # pick how many surrogate variables to keep
 n_sv_keep <- min(3, svseq$n.sv)
 sv_terms <- paste0("SV", 1:n_sv_keep)
