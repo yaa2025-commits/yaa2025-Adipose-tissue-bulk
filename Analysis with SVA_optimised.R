@@ -726,67 +726,6 @@ for (tp in names(deg_summary$Timepoints)) {
                   title = paste("GO Enrichment:", comparison_label, toupper(tp)))
 }
 
-
-
-# pick how many surrogate variables to keep
-n_sv_keep <- min(3, svseq$n.sv)
-sv_terms <- paste0("SV", 1:n_sv_keep)
-
-#### Main DESEQ2 function contrast = c("Group", "Compare", "Reference")
-Deseq2object_sva <- run_deseq2_pipeline(
-  combined_counts, metadata_ordered,
-  groups_keep = c("CSDS", "Control"),
-  contrast = c("Group", "CSDS", "Control"),
-  contrast <- c("Group", "CSDS", "Control")
-  group1 <- contrast[2]
-  group2 <- contrast[3]
-  comparison_label <- paste(group1, "vs", group2),
-  sv_terms = sv_terms
-)
-
-
-# PCA
-plot_pca_subset(Deseq2object_sva$vst_mat, Deseq2object_sva$metadata,
-                ntop = 1000, pc_x = 1, pc_y = 2)
-
-# Summarise DEGs 
-deg_summary <- summarise_deg_counts(
-  combined_counts, metadata_ordered,
-  group1, group2,
-  sv_terms = sv_terms
-)
-
-# DEG summary plot
-plot_deg_summary(deg_summary, group1, group2)
-
-# Volcano
-plot_volcano_sv(Deseq2object_sva, title = paste(comparison_label, "(SV-adjusted)"))
-
-# MA plot
-p_ma_sv <- plot_MA_sv(Deseq2object_sva, title = paste(comparison_label, "(SV-adjusted)"))
-print(p_ma_sv)
-
-# Heatmap
-plot_deg_heatmap(Deseq2object_sva$vst_mat, Deseq2object_sva$res, Deseq2object_sva$metadata,
-                 top_n = 50,
-                 color_by = "Group",
-                 shape_by = "Timepoint",
-                 title = paste(comparison_label, ": Top 50 DEGs"))
-
-# GO analyses
-go_global <- run_go_analysis(deg_summary$Global$res, 
-                             title = paste("GO Enrichment:", comparison_label, "(All Times)"))
-go_day    <- run_go_analysis(deg_summary$Day$res, 
-                             title = paste("GO Enrichment:", comparison_label, "(Day)"))
-go_night  <- run_go_analysis(deg_summary$Night$res, 
-                             title = paste("GO Enrichment:", comparison_label, "(Night)"))
-
-# Timepoints
-for (tp in names(deg_summary$Timepoints)) {
-  run_go_analysis(deg_summary$Timepoints[[tp]]$res,
-                  title = paste("GO Enrichment:", comparison_label, toupper(tp)))
-}
-
 # ------------------------- Use to diagnose outliers -------------------------
 
 library(ggplot2)
